@@ -41,4 +41,35 @@ public class LUTImage {
         return (int) Math.round(lutRoot);
     }
 
+    public int rowDepth() {
+        return lutHeight / sideSize;
+    }
+
+    public int columnDepth() {
+        return lutWidth / sideSize;
+    }
+
+    public int getColorPixelOnLut(int pixelColor) {
+        int lutIndex = getLutIndex(pixelColor);
+        return getPixelOnLut(lutIndex);
+    }
+
+    private int getPixelOnLut(int lutIndex) {
+        int R = ((lutColors[lutIndex] >> 16) & 0xff);
+        int G = ((lutColors[lutIndex] >> 8) & 0xff);
+        int B = ((lutColors[lutIndex]) & 0xff);
+        return 0xff000000 | (R << 16) | (G << 8) | B;
+    }
+
+    private int getLutIndex(int pixelColor) {
+        int rowDepth = rowDepth();
+        int r = ((pixelColor >> 16) & 0xff) / rgbDistortion;
+        int g = ((pixelColor >> 8) & 0xff) / rgbDistortion;
+        int b = (pixelColor & 0xff) / rgbDistortion;
+        final int blueXDepth = rowDepth == 1 ? b : b % rowDepth;
+        final int blueYDepth = rowDepth == 1 ? 0 : b / rowDepth;
+        int lutX = blueXDepth * sideSize + r;
+        int lutY = blueYDepth * sideSize + g;
+        return lutY * lutWidth + lutX;
+    }
 }
