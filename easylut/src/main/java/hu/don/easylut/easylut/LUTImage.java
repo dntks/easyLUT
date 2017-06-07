@@ -11,6 +11,7 @@ public class LUTImage {
     public final int lutHeight;
     public final int sideSize;
     public final int rgbDistortion;
+    public final CoordinateToColor coordinateToColor;
     public final int lutColors[];
 
     public LUTImage(int lutWidth, int lutHeight, int[] lutColors) {
@@ -19,6 +20,7 @@ public class LUTImage {
         this.lutColors = lutColors;
         this.sideSize = sideSize();
         this.rgbDistortion = COLOR_DEPTH / sideSize;
+        this.coordinateToColor = new CoordinateToColor();
     }
 
     public static LUTImage createLutImage(Bitmap lutBitmap) {
@@ -78,44 +80,59 @@ public class LUTImage {
         return new Point(lutX, lutY);
     }
 
-    public class DistortedColor {
-        public final int distortedRed;
-        public final int distortedGreen;
-        public final int distortedBlue;
+    public class CoordinateToColor {
+        final boolean isRedMappedToX;
+        final boolean isRedMappedToY;
+        final boolean isRedMappedToZ;
+        final boolean isGreenMappedToX;
+        final boolean isGreenMappedToY;
+        final boolean isGreenMappedToZ;
 
-        public DistortedColor(int pixelColor) {
-            distortedRed = Color.red(pixelColor) / rgbDistortion;
-            distortedGreen = Color.green(pixelColor) / rgbDistortion;
-            distortedBlue = Color.blue(pixelColor) / rgbDistortion;
+        public CoordinateToColor() {
+            isRedMappedToX = isRedMappedToX();
+            isRedMappedToY = isRedMappedToY();
+            isGreenMappedToX = isGreenMappedToX();
+            isGreenMappedToY = isGreenMappedToY();
+            isRedMappedToZ = isRedMappedToZ();
+            isGreenMappedToZ = isGreenMappedToZ();
         }
 
-        public int getColorOnXCoordinate() {
+        private boolean isRedMappedToX() {
             int xOnStrongest = getPixelByIndex(sideSize - 1);
-            return returnStrongest(xOnStrongest);
+            return redIsStrongestOnPixel(xOnStrongest);
         }
 
-        public int getColorOnYCoordinate() {
+        public boolean isRedMappedToY() {
             int yIndex = lutWidth * (sideSize - 1);
             int yOnStrongest = getPixelByIndex(yIndex);
-            return returnStrongest(yOnStrongest);
+            return redIsStrongestOnPixel(yOnStrongest);
         }
 
-        public int getColorOnZCoordinate() {
+        public boolean isRedMappedToZ() {
             int columnDepth = columnDepth();
             int X = (columnDepth - 1) * sideSize + 1;
             int Y = (rowDepth() - 1) * sideSize + 1;
             int xOnStrongest = getPixelByIndex(Y * lutWidth + X);
-            return returnStrongest(xOnStrongest);
+            return redIsStrongestOnPixel(xOnStrongest);
         }
 
-        private int returnStrongest(int pixel) {
-            if (redIsStrongestOnPixel(pixel)) {
-                return distortedRed;
-            } else if (greenIsStrongestOnPixel(pixel)) {
-                return distortedGreen;
-            } else {
-                return distortedBlue;
-            }
+        public boolean isGreenMappedToX() {
+            int xOnStrongest = getPixelByIndex(sideSize - 1);
+            return greenIsStrongestOnPixel(xOnStrongest);
+        }
+
+        public boolean isGreenMappedToY() {
+            int yIndex = lutWidth * (sideSize - 1);
+            int yOnStrongest = getPixelByIndex(yIndex);
+            return greenIsStrongestOnPixel(yOnStrongest);
+        }
+
+        public boolean isGreenMappedToZ() {
+            int columnDepth = columnDepth();
+            int X = (columnDepth - 1) * sideSize + 1;
+            int Y = (rowDepth() - 1) * sideSize + 1;
+            int xOnStrongest = getPixelByIndex(Y * lutWidth + X);
+            return greenIsStrongestOnPixel(xOnStrongest);
         }
 
         private boolean greenIsStrongestOnPixel(int color) {
@@ -133,5 +150,48 @@ public class LUTImage {
             return red > green &&
                     red > blue;
         }
+    }
+
+    public class DistortedColor {
+        public final int distortedRed;
+        public final int distortedGreen;
+        public final int distortedBlue;
+
+        public DistortedColor(int pixelColor) {
+            distortedRed = Color.red(pixelColor) / rgbDistortion;
+            distortedGreen = Color.green(pixelColor) / rgbDistortion;
+            distortedBlue = Color.blue(pixelColor) / rgbDistortion;
+        }
+
+        public int getColorOnXCoordinate() {
+            if (coordinateToColor.isRedMappedToX) {
+                return distortedRed;
+            } else if (coordinateToColor.isGreenMappedToX) {
+                return distortedGreen;
+            } else {
+                return distortedBlue;
+            }
+        }
+
+        public int getColorOnYCoordinate() {
+            if (coordinateToColor.isRedMappedToY) {
+                return distortedRed;
+            } else if (coordinateToColor.isGreenMappedToY) {
+                return distortedGreen;
+            } else {
+                return distortedBlue;
+            }
+        }
+
+        public int getColorOnZCoordinate() {
+            if (coordinateToColor.isRedMappedToZ) {
+                return distortedRed;
+            } else if (coordinateToColor.isGreenMappedToZ) {
+                return distortedGreen;
+            } else {
+                return distortedBlue;
+            }
+        }
+
     }
 }
