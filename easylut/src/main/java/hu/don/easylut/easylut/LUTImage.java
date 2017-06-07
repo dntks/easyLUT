@@ -2,6 +2,8 @@ package hu.don.easylut.easylut;
 
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 
 public class LUTImage {
     private static final int COLOR_DEPTH = 256;
@@ -50,26 +52,86 @@ public class LUTImage {
     }
 
     public int getColorPixelOnLut(int pixelColor) {
-        int lutIndex = getLutIndex(pixelColor);
-        return getPixelOnLut(lutIndex);
+        int lutIndex = getLutPixelIndex(pixelColor);
+        return getPixelByIndex(lutIndex);
     }
 
-    private int getPixelOnLut(int lutIndex) {
-        int R = ((lutColors[lutIndex] >> 16) & 0xff);
-        int G = ((lutColors[lutIndex] >> 8) & 0xff);
-        int B = ((lutColors[lutIndex]) & 0xff);
-        return 0xff000000 | (R << 16) | (G << 8) | B;
+    private int getPixelByIndex(int lutIndex) {
+        int red = ((lutColors[lutIndex] >> 16) & 0xff);
+        int green = ((lutColors[lutIndex] >> 8) & 0xff);
+        int blue = ((lutColors[lutIndex]) & 0xff);
+        return 0xff000000 | (red << 16) | (green << 8) | blue;
     }
 
-    private int getLutIndex(int pixelColor) {
+    private int getLutPixelIndex(int pixelColor) {
+        DistortedColor distortedColor = new DistortedColor(pixelColor);
+        Point point = getPointCoordinateOnLutImage(distortedColor.getColorOnXCoordinate(), distortedColor.getColorOnYCoordinate(), distortedColor.getColorOnZCoordinate());
+        return point.y * lutWidth + point.x;
+    }
+
+    private Point getPointCoordinateOnLutImage(int colorOnXCoordinate, int colorOnYCoordinate, int colorOnZCoordinate) {
         int rowDepth = rowDepth();
-        int r = ((pixelColor >> 16) & 0xff) / rgbDistortion;
-        int g = ((pixelColor >> 8) & 0xff) / rgbDistortion;
-        int b = (pixelColor & 0xff) / rgbDistortion;
-        final int blueXDepth = rowDepth == 1 ? b : b % rowDepth;
-        final int blueYDepth = rowDepth == 1 ? 0 : b / rowDepth;
-        int lutX = blueXDepth * sideSize + r;
-        int lutY = blueYDepth * sideSize + g;
-        return lutY * lutWidth + lutX;
+        final int z_XDepth = rowDepth == 1 ? colorOnZCoordinate : colorOnZCoordinate % rowDepth;
+        final int z_YDepth = rowDepth == 1 ? 0 : colorOnZCoordinate / rowDepth;
+        int lutX = z_XDepth * sideSize + colorOnXCoordinate;
+        int lutY = z_YDepth * sideSize + colorOnYCoordinate;
+        return new Point(lutX, lutY);
+    }
+
+    public class DistortedColor {
+        public final int distortedRed;
+        public final int distortedGreen;
+        public final int distortedBlue;
+
+        public DistortedColor(int pixelColor) {
+            distortedRed = Color.red(pixelColor) / rgbDistortion;
+            distortedGreen = Color.green(pixelColor) / rgbDistortion;
+            distortedBlue = Color.blue(pixelColor) / rgbDistortion;
+        }
+
+        public int getColorOnXCoordinate() {
+            int xOnStrongest = getPixelByIndex(sideSize - 1);
+            return returnStrongest(xOnStrongest);
+        }
+
+        public int getColorOnYCoordinate() {
+            int yIndex = lutWidth * (sideSize - 1);
+            int yOnStrongest = getPixelByIndex(yIndex);
+            return returnStrongest(yOnStrongest);
+        }
+
+        public int getColorOnZCoordinate() {
+            int columnDepth = columnDepth();
+            int X = (columnDepth - 1) * sideSize + 1;
+            int Y = (rowDepth() - 1) * sideSize + 1;
+            int xOnStrongest = getPixelByIndex(Y * lutWidth + X);
+            return returnStrongest(xOnStrongest);
+        }
+
+        private int returnStrongest(int pixel) {
+            if (redIsStrongestOnPixel(pixel)) {
+                return distortedRed;
+            } else if (greenIsStrongestOnPixel(pixel)) {
+                return distortedGreen;
+            } else {
+                return distortedBlue;
+            }
+        }
+
+        private boolean greenIsStrongestOnPixel(int color) {
+            int green = Color.green(color);
+            int red = Color.red(color);
+            int blue = Color.blue(color);
+            return green > red &&
+                    green > blue;
+        }
+
+        private boolean redIsStrongestOnPixel(int color) {
+            int red = Color.red(color);
+            int green = Color.green(color);
+            int blue = Color.blue(color);
+            return red > green &&
+                    red > blue;
+        }
     }
 }

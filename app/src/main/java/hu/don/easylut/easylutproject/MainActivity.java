@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         effectItems.add(new FilterNon());
+        effectItems.add(new LUTFilter(resources, R.drawable.anotherlut, R.drawable.anotherlut));
+        effectItems.add(new LUTFilter(resources, R.drawable.lut2, R.drawable.lut2));
+        effectItems.add(new LUTFilter(resources, R.drawable.lut3, R.drawable.lut3));
         effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_01, R.drawable.pnglut_small_1));
         effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_02, R.drawable.pnglut_small_2));
         effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_03, R.drawable.pnglut_small_3));
