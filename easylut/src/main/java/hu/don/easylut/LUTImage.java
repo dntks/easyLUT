@@ -1,4 +1,4 @@
-package hu.don.easylut.easylut;
+package hu.don.easylut;
 
 
 import android.graphics.Bitmap;

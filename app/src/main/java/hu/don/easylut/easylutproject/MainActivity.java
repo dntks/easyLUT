@@ -12,18 +12,15 @@ import android.widget.ImageView;
 import java.util.LinkedList;
 import java.util.List;
 
-import hu.don.easylut.easylut.Filter;
-import hu.don.easylut.easylut.FilterNon;
-import hu.don.easylut.easylut.LUTFilter;
+import hu.don.easylut.EasyLUT;
+import hu.don.easylut.filter.Filter;
 
 
 public class MainActivity extends AppCompatActivity {
-    List<Filter> effectItems = new LinkedList<>();
-    int currentFilter = 0;
-    int currentFilter2 = 0;
-    ImageView imageView;
-    ImageView imageView2;
-    Bitmap originalBitmap;
+    private final List<Filter> effectItems = new LinkedList<>();
+    private int currentFilter = 0;
+    private ImageView imageView;
+    private Bitmap originalBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageView = (ImageView) findViewById(R.id.image);
-        imageView2 = (ImageView) findViewById(R.id.image2);
         Resources resources = getResources();
         imageView.post(new Runnable() {
             @Override
@@ -47,18 +43,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        effectItems.add(new FilterNon());
-        effectItems.add(new LUTFilter(resources, R.drawable.anotherlut, R.drawable.anotherlut));
-        effectItems.add(new LUTFilter(resources, R.drawable.lut2, R.drawable.lut2));
-        effectItems.add(new LUTFilter(resources, R.drawable.lut3, R.drawable.lut3));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_01, R.drawable.pnglut_small_1));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_02, R.drawable.pnglut_small_2));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_03, R.drawable.pnglut_small_3));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_04, R.drawable.pnglut_small_4));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_05, R.drawable.pnglut_small_5));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_06, R.drawable.pnglut_small_6));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_07, R.drawable.pnglut_small_7));
-        effectItems.add(new LUTFilter(resources, R.drawable.filter_lut_08, R.drawable.pnglut_small_8));
+        effectItems.add(EasyLUT.createNonFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.anotherlut).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.lut2).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.lut3).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_01).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_02).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_03).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_04).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_05).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_06).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_07).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_08).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_1).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_2).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_3).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_4).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_5).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_6).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_7).createFilter());
+        effectItems.add(EasyLUT.fromhResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_8).createFilter());
 
     }
 
@@ -72,13 +76,4 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageBitmap(bitmap);
     }
 
-    public void clickOnSecondImage(View view) {
-        currentFilter2++;
-        if (currentFilter2 >= effectItems.size()) {
-            currentFilter2 = 0;
-        }
-        final Filter filter = effectItems.get(currentFilter2);
-        final Bitmap bitmap = filter.applySmallFilterToBitmap(originalBitmap);
-        imageView2.setImageBitmap(bitmap);
-    }
 }
