@@ -4,20 +4,23 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
 
-import hu.don.easylut.LUTImage;
+import hu.don.easylut.lutimage.CoordinateToColor;
+import hu.don.easylut.lutimage.LUTImage;
 
 public abstract class LUTFilter implements Filter {
 
     private final BitmapStrategy strategy;
+    private final CoordinateToColor.Type coordinateToColorType;
 
-    protected LUTFilter(BitmapStrategy strategy) {
+    protected LUTFilter(BitmapStrategy strategy, CoordinateToColor.Type coordinateToColorType) {
         this.strategy = strategy;
+        this.coordinateToColorType = coordinateToColorType;
     }
 
     @Override
     public Bitmap applyFilterToBitmap(Bitmap src) {
         Bitmap lutBitmap = getLUTBitmap();
-        LUTImage lutImage = LUTImage.createLutImage(lutBitmap);
+        LUTImage lutImage = LUTImage.createLutImage(lutBitmap, coordinateToColorType);
         return strategy.applyLut(src, lutImage);
     }
 
@@ -33,9 +36,10 @@ public abstract class LUTFilter implements Filter {
 
     public static abstract class Builder<B> {
         protected BitmapStrategy strategy = new CreatingNewBitmap();
+        protected CoordinateToColor.Type coordinateToColorType = CoordinateToColor.Type.GUESS_AXES;
 
         public B withStrategy(BitmapStrategy.Type strategy) {
-            switch (strategy){
+            switch (strategy) {
                 case APPLY_ON_ORIGINAL_BITMAP:
                     this.strategy = new ApplyOnOriginal();
                     break;
@@ -43,6 +47,11 @@ public abstract class LUTFilter implements Filter {
                     this.strategy = new CreatingNewBitmap();
                     break;
             }
+            return self();
+        }
+
+        public B withColorAxes(CoordinateToColor.Type coordinateToColorType) {
+            this.coordinateToColorType = coordinateToColorType;
             return self();
         }
 

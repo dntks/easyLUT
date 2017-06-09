@@ -7,7 +7,7 @@ import hu.don.easylut.filter.LutFilterFromResource;
 
 public class EasyLUT {
 
-    public static LutFilterFromResource.Builder fromhResourceId() {
+    public static LutFilterFromResource.Builder fromResourceId() {
         return new LutFilterFromResource.Builder();
     }
 

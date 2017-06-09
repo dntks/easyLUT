@@ -3,7 +3,7 @@ package hu.don.easylut.filter;
 
 import android.graphics.Bitmap;
 
-import hu.don.easylut.LUTImage;
+import hu.don.easylut.lutimage.LUTImage;
 
 public interface BitmapStrategy {
 

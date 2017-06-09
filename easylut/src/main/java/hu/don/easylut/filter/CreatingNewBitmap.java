@@ -3,9 +3,9 @@ package hu.don.easylut.filter;
 
 import android.graphics.Bitmap;
 
-import hu.don.easylut.LUTImage;
+import hu.don.easylut.lutimage.LUTImage;
 
-public class CreatingNewBitmap implements BitmapStrategy{
+public class CreatingNewBitmap implements BitmapStrategy {
     @Override
     public Bitmap applyLut(Bitmap src, LUTImage lutImage) {
         int mWidth = src.getWidth();
