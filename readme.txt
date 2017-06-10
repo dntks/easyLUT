@@ -5,6 +5,6 @@ Contains an app using the library.
 
 EasyLUT library is available on jCenter:
 
-compile 'hu.don.easylut:easylut:0.3'
+compile 'hu.don.easylut:easylut:0.4'
 
 Check the wiki for further information: https://github.com/dntks/easyLUT/wiki
