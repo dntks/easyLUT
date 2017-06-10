@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'hu.don.easylut'
     PUBLISH_ARTIFACT_ID = 'easylut'
-    PUBLISH_VERSION = '0.1'
+    PUBLISH_VERSION = '0.4'
 }
 android {
     compileSdkVersion 25
@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 3
-        versionName "0.3"
+        versionCode 4
+        versionName "0.4"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

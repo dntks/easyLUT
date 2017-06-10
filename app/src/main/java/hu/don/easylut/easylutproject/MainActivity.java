@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         effectItems.add(EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_07).createFilter());
         effectItems.add(EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_lut_08).createFilter());
         effectItems.add(EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.pnglut_small_1).createFilter());
-
     }
 
     public void clickOnImage(View view) {
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             currentFilter = 0;
         }
         final Filter filter = effectItems.get(currentFilter);
-        final Bitmap bitmap = filter.applyFilterToBitmap(originalBitmap);
+        final Bitmap bitmap = filter.apply(originalBitmap);
         imageView.setImageBitmap(bitmap);
     }
 

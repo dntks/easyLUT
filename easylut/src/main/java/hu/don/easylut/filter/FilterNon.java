@@ -6,12 +6,12 @@ import android.widget.ImageView;
 public class FilterNon implements Filter {
 
     @Override
-    public Bitmap applyFilterToBitmap(Bitmap source) {
+    public Bitmap apply(Bitmap source) {
         return source;
     }
 
     @Override
-    public void applyFilterToImageView(ImageView imageView) {
+    public void apply(ImageView imageView) {
     }
 
 }

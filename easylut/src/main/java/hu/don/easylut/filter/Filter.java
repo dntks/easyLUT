@@ -5,8 +5,8 @@ import android.widget.ImageView;
 
 public interface Filter {
 
-    Bitmap applyFilterToBitmap(Bitmap src);
+    Bitmap apply(Bitmap src);
 
-    void applyFilterToImageView(ImageView imageView);
+    void apply(ImageView imageView);
 
 }

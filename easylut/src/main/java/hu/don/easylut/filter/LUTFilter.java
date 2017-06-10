@@ -18,7 +18,7 @@ public abstract class LUTFilter implements Filter {
     }
 
     @Override
-    public Bitmap applyFilterToBitmap(Bitmap src) {
+    public Bitmap apply(Bitmap src) {
         Bitmap lutBitmap = getLUTBitmap();
         LUTImage lutImage = LUTImage.createLutImage(lutBitmap, coordinateToColorType);
         return strategy.applyLut(src, lutImage);
@@ -27,10 +27,10 @@ public abstract class LUTFilter implements Filter {
     protected abstract Bitmap getLUTBitmap();
 
     @Override
-    public void applyFilterToImageView(ImageView imageView) {
+    public void apply(ImageView imageView) {
         BitmapDrawable imageDrawable = (BitmapDrawable) imageView.getDrawable();
         Bitmap source = imageDrawable.getBitmap();
-        Bitmap bitmap = applyFilterToBitmap(source);
+        Bitmap bitmap = apply(source);
         imageView.setImageBitmap(bitmap);
     }
 
