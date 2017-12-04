@@ -1,9 +1,7 @@
-*.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-.DS_Store
-/build
-/captures
-.externalNativeBuild
+.gradle/
+.idea/
+app/app.iml
+build/
+easyLUT.iml
+easylut/easylut.iml
+local.properties
