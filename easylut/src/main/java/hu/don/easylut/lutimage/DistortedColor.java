@@ -2,7 +2,11 @@ package hu.don.easylut.lutimage;
 
 import android.graphics.Color;
 
-public class DistortedColor {
+public final class DistortedColor {
+
+    private DistortedColor() {
+        // Do not instantiate this class as it's called for each pixel and will destroy the heap
+    }
 
     public static int getColorOnXCoordinate(LUTImage lutImage, int pixelColor) {
         if (lutImage.coordinateToColor.isRedMappedToX()) {
