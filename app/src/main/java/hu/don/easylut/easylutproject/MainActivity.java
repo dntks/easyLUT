@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private static final boolean RESIZE_BITMAP = true;
+
     private ImageView ivImage;
     private TextView tvName;
     private ProgressBar pbBusy;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
 
         rvFilters = findViewById(R.id.rv_filters);
         addFilter("none", EasyLUT.createNonFilter());
+        addFilter("identity", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.identity).createFilter());
+        addFilter("identity_hald", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.identity_hald).createFilter());
         addFilter("square_8_00", EasyLUT.fromResourceId().withColorAxes(CoordinateToColor.Type.RGB_TO_ZYX).withResources(resources).withLutBitmapId(R.drawable.filter_square_8_00).createFilter());
         addFilter("square_8_01", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_01).createFilter());
         addFilter("square_8_02", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_02).createFilter());
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
                 if (item.isChecked()) {
                     ivImage.setImageResource(R.drawable.identity);
                 } else {
-                    ivImage.setImageResource(R.drawable.pexels);
+                    ivImage.setImageResource(R.drawable.landscape);
                 }
                 updateBitmap();
                 return true;
@@ -101,12 +105,21 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
 
     private void updateBitmap() {
         originalBitmap = ((BitmapDrawable) ivImage.getDrawable()).getBitmap();
-        final int measuredHeight = ivImage.getMeasuredHeight();
-        final int measuredWidth = ivImage.getMeasuredWidth();
-        if (originalBitmap.getHeight() >= measuredHeight || originalBitmap.getWidth() >= measuredWidth) {
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            originalBitmap = Bitmap.createScaledBitmap(originalBitmap, measuredWidth, measuredHeight, true);
+        if (RESIZE_BITMAP) {
+            int measuredHeight = ivImage.getMeasuredHeight();
+            int measuredWidth = ivImage.getMeasuredWidth();
+            if (measuredWidth != 0 && measuredHeight != 0 && (originalBitmap.getHeight() >= measuredHeight || originalBitmap.getWidth() >= measuredWidth)) {
+                float originalRatio = (float) originalBitmap.getWidth() / (float) originalBitmap.getHeight();
+                float measuredRatio = (float) measuredWidth / (float) measuredHeight;
+                if (originalRatio > measuredRatio) {
+                    measuredWidth = (int) (measuredHeight * originalRatio);
+                } else {
+                    measuredHeight = (int) (measuredWidth / originalRatio);
+                }
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                originalBitmap = Bitmap.createScaledBitmap(originalBitmap, measuredWidth, measuredHeight, true);
+            }
         }
         onFilterClicked(effectItems.get(0));
     }
@@ -124,7 +137,9 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
 
             @Override
             protected void onPreExecute() {
+                pbBusy.animate().alpha(1f).start();
                 pbBusy.setVisibility(View.VISIBLE);
+                ivImage.animate().alpha(0.5f).start();
                 start = System.nanoTime();
             }
 
@@ -136,7 +151,8 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 ivImage.setImageBitmap(bitmap);
-                pbBusy.setVisibility(View.GONE);
+                ivImage.animate().alpha(1f).start();
+                pbBusy.animate().alpha(0f).start();
                 Log.d(TAG, String.format("processed bitmap in %.2fms", (System.nanoTime() - start) / 1e6f));
             }
         }.execute();

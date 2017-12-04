@@ -16,8 +16,9 @@
             android:id="@+id/iv_image"
             android:layout_width="match_parent"
             android:layout_height="240dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/pexels"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/landscape"
             tools:ignore="ContentDescription"/>
 
         <TextView
