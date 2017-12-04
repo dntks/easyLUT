@@ -67,6 +67,7 @@ public class LUTImage {
     }
 
     private int getLutPixelIndex(int pixelColor) {
+        // FIXME this creates a large number of objects on the heap
         DistortedColor distortedColor = new DistortedColor(this, pixelColor);
         Point point = getPointCoordinateOnLutImage(distortedColor.getColorOnXCoordinate(), distortedColor.getColorOnYCoordinate(), distortedColor.getColorOnZCoordinate());
         return point.y * lutWidth + point.x;
