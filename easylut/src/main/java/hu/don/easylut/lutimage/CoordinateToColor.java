@@ -3,6 +3,199 @@ package hu.don.easylut.lutimage;
 
 public interface CoordinateToColor {
 
+    class RgbToXyz implements CoordinateToColor {
+        @Override
+        public boolean isRedMappedToX() {
+            return true;
+        }
+
+        @Override
+        public boolean isRedMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToZ() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToY() {
+            return true;
+        }
+
+        @Override
+        public boolean isGreenMappedToZ() {
+            return false;
+        }
+    }
+
+    class RgbToXzy implements CoordinateToColor {
+        @Override
+        public boolean isRedMappedToX() {
+            return true;
+        }
+
+        @Override
+        public boolean isRedMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToZ() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToZ() {
+            return true;
+        }
+    }
+
+    class RgbToYzx implements CoordinateToColor {
+        @Override
+        public boolean isRedMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToY() {
+            return true;
+        }
+
+        @Override
+        public boolean isRedMappedToZ() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToZ() {
+            return true;
+        }
+    }
+
+    class RgbToYxz implements CoordinateToColor {
+        @Override
+        public boolean isRedMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToY() {
+            return true;
+        }
+
+        @Override
+        public boolean isRedMappedToZ() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToX() {
+            return true;
+        }
+
+        @Override
+        public boolean isGreenMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToZ() {
+            return false;
+        }
+    }
+
+    class RgbToZxy implements CoordinateToColor {
+        @Override
+        public boolean isRedMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToZ() {
+            return true;
+        }
+
+        @Override
+        public boolean isGreenMappedToX() {
+            return true;
+        }
+
+        @Override
+        public boolean isGreenMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToZ() {
+            return false;
+        }
+    }
+
+    class RgbToZyx implements CoordinateToColor {
+        @Override
+        public boolean isRedMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToY() {
+            return false;
+        }
+
+        @Override
+        public boolean isRedMappedToZ() {
+            return true;
+        }
+
+        @Override
+        public boolean isGreenMappedToX() {
+            return false;
+        }
+
+        @Override
+        public boolean isGreenMappedToY() {
+            return true;
+        }
+
+        @Override
+        public boolean isGreenMappedToZ() {
+            return false;
+        }
+    }
+
+
     boolean isRedMappedToX();
 
     boolean isRedMappedToY();

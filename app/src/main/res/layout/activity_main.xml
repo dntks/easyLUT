@@ -18,8 +18,8 @@
             android:layout_height="240dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/landscape"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/landscape"/>
 
         <TextView
             android:id="@+id/tv_name"

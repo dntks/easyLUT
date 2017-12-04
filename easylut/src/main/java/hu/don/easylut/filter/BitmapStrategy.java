@@ -7,6 +7,8 @@ import hu.don.easylut.lutimage.LUTImage;
 
 public interface BitmapStrategy {
 
+    String TAG = BitmapStrategy.class.getSimpleName();
+
     Bitmap applyLut(Bitmap src, LUTImage lutImage);
 
     enum Type{

@@ -6,14 +6,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import hu.don.easylut.lutimage.CoordinateToColor;
+import hu.don.easylut.lutimage.LutAlignment;
 
 public class LutFilterFromResource extends LUTFilter {
 
     private final Resources resources;
     private final int lutBitmapId;
 
-    private LutFilterFromResource(Resources resources, int lutBitmapId, BitmapStrategy strategy, CoordinateToColor.Type coordinateToColorType) {
-        super(strategy, coordinateToColorType);
+    private LutFilterFromResource(Resources resources, int lutBitmapId, BitmapStrategy strategy,
+                                  CoordinateToColor.Type coordinateToColorType,
+                                  LutAlignment.Mode lutAlignmentMode) {
+        super(strategy, coordinateToColorType, lutAlignmentMode);
         this.resources = resources;
         this.lutBitmapId = lutBitmapId;
     }
@@ -38,7 +41,8 @@ public class LutFilterFromResource extends LUTFilter {
         }
 
         public Filter createFilter() {
-            return new LutFilterFromResource(resources, lutBitmapId, strategy, coordinateToColorType);
+            return new LutFilterFromResource(resources, lutBitmapId, strategy,
+                    coordinateToColorType, lutAlignmentMode);
         }
 
         @Override

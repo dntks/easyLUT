@@ -4,13 +4,16 @@ package hu.don.easylut.filter;
 import android.graphics.Bitmap;
 
 import hu.don.easylut.lutimage.CoordinateToColor;
+import hu.don.easylut.lutimage.LutAlignment;
 
 public class LutFilterFromBitmap extends LUTFilter {
 
     private final Bitmap bitmap;
 
-    private LutFilterFromBitmap(Bitmap bitmap, BitmapStrategy strategy, CoordinateToColor.Type coordinateToColorType) {
-        super(strategy, coordinateToColorType);
+    private LutFilterFromBitmap(Bitmap bitmap, BitmapStrategy strategy,
+                                CoordinateToColor.Type coordinateToColorType,
+                                LutAlignment.Mode lutAlignmentMode) {
+        super(strategy, coordinateToColorType, lutAlignmentMode);
         this.bitmap = bitmap;
     }
 
@@ -28,7 +31,8 @@ public class LutFilterFromBitmap extends LUTFilter {
         }
 
         public Filter createFilter() {
-            return new LutFilterFromBitmap(bitmap, strategy, coordinateToColorType);
+            return new LutFilterFromBitmap(bitmap, strategy,
+                    coordinateToColorType, lutAlignmentMode);
         }
 
         @Override

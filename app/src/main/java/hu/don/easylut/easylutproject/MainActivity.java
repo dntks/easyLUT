@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +24,9 @@ import java.util.Locale;
 
 import hu.don.easylut.EasyLUT;
 import hu.don.easylut.filter.Filter;
+import hu.don.easylut.filter.LutFilterFromResource;
 import hu.don.easylut.lutimage.CoordinateToColor;
+import hu.don.easylut.lutimage.LutAlignment;
 
 
 public class MainActivity extends AppCompatActivity implements FilterAdapter.OnFilterSelected {
@@ -37,8 +40,9 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
     private ProgressBar pbBusy;
     private RecyclerView rvFilters;
 
-    private final List<FilterSelection> effectItems = new LinkedList<>();
     private Bitmap originalBitmap;
+    private final List<FilterSelection> effectItems = new LinkedList<>();
+    private FilterSelection lastFilterSelection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,33 +56,52 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
         ivImage.post(new Runnable() {
             @Override
             public void run() {
-                updateBitmap();
+                setImage(R.drawable.rgb);
             }
         });
 
         rvFilters = findViewById(R.id.rv_filters);
+
+        LutFilterFromResource.Builder squareBgr =
+                EasyLUT.fromResourceId().withColorAxes(CoordinateToColor.Type.RGB_TO_ZYX).withResources(resources);
+        LutFilterFromResource.Builder squareRgb =
+                EasyLUT.fromResourceId().withColorAxes(CoordinateToColor.Type.RGB_TO_XYZ).withResources(resources);
+        LutFilterFromResource.Builder haldRgb =
+                EasyLUT.fromResourceId().withColorAxes(CoordinateToColor.Type.RGB_TO_XYZ).withResources(resources)
+                       .withAlignmentMode(LutAlignment.Mode.HALD);
+
         addFilter("none", EasyLUT.createNonFilter());
-        addFilter("identity", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.identity).createFilter());
-        addFilter("identity_hald", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.identity_hald).createFilter());
-        addFilter("square_8_00", EasyLUT.fromResourceId().withColorAxes(CoordinateToColor.Type.RGB_TO_ZYX).withResources(resources).withLutBitmapId(R.drawable.filter_square_8_00).createFilter());
-        addFilter("square_8_01", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_01).createFilter());
-        addFilter("square_8_02", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_02).createFilter());
-        addFilter("square_8_03", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_03).createFilter());
-        addFilter("square_8_04", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_04).createFilter());
-        addFilter("square_8_05", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_05).createFilter());
-        addFilter("square_8_06", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_06).createFilter());
-        addFilter("square_8_07", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_07).createFilter());
-        addFilter("square_8_08", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_08).createFilter());
-        addFilter("square_8_09", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_09).createFilter());
-        addFilter("square_4_00", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_4_00).createFilter());
-        addFilter("square_8_vga", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_vga).createFilter());
-        addFilter("square_8_ega", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_ega).createFilter());
-        addFilter("square_8_nintendo", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_nintendo).createFilter());
-        addFilter("square_8_sega", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_square_8_sega).createFilter());
-        addFilter("wide_4_00", EasyLUT.fromResourceId().withResources(resources).withLutBitmapId(R.drawable.filter_wide_4_00).createFilter());
+        addFilter("identity", squareRgb.withLutBitmapId(R.drawable.identity).createFilter());
+        addFilter("identity_square_2", squareRgb.withLutBitmapId(R.drawable.identity_square_2).createFilter());
+        addFilter("identity_hald", haldRgb.withLutBitmapId(R.drawable.identity_hald).createFilter());
+        addFilter("identity_hald_2", haldRgb.withLutBitmapId(R.drawable.identity_hald_2).createFilter());
+        addFilter("square_8_00", squareRgb.withLutBitmapId(R.drawable.filter_square_8_00).createFilter());
+        addFilter("square_8_01", squareRgb.withLutBitmapId(R.drawable.filter_square_8_01).createFilter());
+        addFilter("square_8_02", squareRgb.withLutBitmapId(R.drawable.filter_square_8_02).createFilter());
+        addFilter("square_8_03", squareRgb.withLutBitmapId(R.drawable.filter_square_8_03).createFilter());
+        addFilter("square_8_04", squareRgb.withLutBitmapId(R.drawable.filter_square_8_04).createFilter());
+        addFilter("square_8_05", squareRgb.withLutBitmapId(R.drawable.filter_square_8_05).createFilter());
+        addFilter("square_8_06", squareRgb.withLutBitmapId(R.drawable.filter_square_8_06).createFilter());
+        addFilter("square_8_07", squareRgb.withLutBitmapId(R.drawable.filter_square_8_07).createFilter());
+        addFilter("square_8_08", squareRgb.withLutBitmapId(R.drawable.filter_square_8_08).createFilter());
+        addFilter("square_8_09", squareRgb.withLutBitmapId(R.drawable.filter_square_8_09).createFilter());
+        addFilter("square_8_09", squareRgb.withLutBitmapId(R.drawable.filter_square_8_09).createFilter());
+        addFilter("square_8_vga", squareRgb.withLutBitmapId(R.drawable.filter_square_8_vga).createFilter());
+        addFilter("square_8_ega", squareRgb.withLutBitmapId(R.drawable.filter_square_8_ega).createFilter());
+        addFilter("square_8_nintendo", squareRgb.withLutBitmapId(R.drawable.filter_square_8_nintendo).createFilter());
+        addFilter("square_8_sega", squareRgb.withLutBitmapId(R.drawable.filter_square_8_sega).createFilter());
+        addFilter("wide_4_00", squareRgb.withLutBitmapId(R.drawable.filter_wide_4_00).createFilter());
+        addFilter("wide_8_bgr", squareBgr.withLutBitmapId(R.drawable.filter_wide_8_bgr).createFilter());
+        addFilter("hald_8_00", haldRgb.withLutBitmapId(R.drawable.filter_hald_8_00).createFilter());
+        addFilter("hald_8_01", haldRgb.withLutBitmapId(R.drawable.filter_hald_8_01).createFilter());
+        addFilter("hald_8_02", haldRgb.withLutBitmapId(R.drawable.filter_hald_8_02).createFilter());
+        addFilter("hald_8_03", haldRgb.withLutBitmapId(R.drawable.filter_hald_8_03).createFilter());
+        addFilter("hald_8_04", haldRgb.withLutBitmapId(R.drawable.filter_hald_8_04).createFilter());
 
         rvFilters.setLayoutManager(new LinearLayoutManager(this));
         rvFilters.setAdapter(new FilterAdapter(effectItems, this));
+
+        lastFilterSelection = effectItems.get(2);
     }
 
     @Override
@@ -93,17 +116,17 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
             case R.id.action_identity:
                 item.setChecked(!item.isChecked());
                 if (item.isChecked()) {
-                    ivImage.setImageResource(R.drawable.identity);
+                    setImage(R.drawable.identity);
                 } else {
-                    ivImage.setImageResource(R.drawable.landscape);
+                    setImage(R.drawable.landscape);
                 }
-                updateBitmap();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateBitmap() {
+    private void setImage(@DrawableRes int resource) {
+        ivImage.setImageResource(resource);
         originalBitmap = ((BitmapDrawable) ivImage.getDrawable()).getBitmap();
         if (RESIZE_BITMAP) {
             int measuredHeight = ivImage.getMeasuredHeight();
@@ -121,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
                 originalBitmap = Bitmap.createScaledBitmap(originalBitmap, measuredWidth, measuredHeight, true);
             }
         }
-        onFilterClicked(effectItems.get(0));
+        onFilterClicked(lastFilterSelection);
     }
 
     private void addFilter(String name, Filter filter) {
@@ -129,7 +152,8 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
     }
 
     @Override
-    public void onFilterClicked(final FilterSelection filterSelection) {
+    public void onFilterClicked(FilterSelection filterSelection) {
+        lastFilterSelection = filterSelection;
         tvName.setText(filterSelection.name);
         new AsyncTask<Void, Void, Bitmap>() {
 
@@ -145,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
 
             @Override
             protected Bitmap doInBackground(Void... voids) {
-                return filterSelection.filter.apply(originalBitmap);
+                return lastFilterSelection.filter.apply(originalBitmap);
             }
 
             @Override

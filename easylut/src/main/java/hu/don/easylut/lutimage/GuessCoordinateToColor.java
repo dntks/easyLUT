@@ -57,9 +57,9 @@ public class GuessCoordinateToColor implements CoordinateToColor{
     }
 
     public boolean calculateRedMappedToZ() {
-        int columnDepth = lutImage.columnDepth();
+        int columnDepth = lutImage.columnDepth;
         int X = (columnDepth - 1) * lutImage.sideSize + 1;
-        int Y = (lutImage.rowDepth() - 1) * lutImage.sideSize + 1;
+        int Y = (lutImage.rowDepth - 1) * lutImage.sideSize + 1;
         int xOnStrongest = lutImage.getPixelByIndex(Y * lutImage.lutWidth + X);
         return redIsStrongestOnPixel(xOnStrongest);
     }
@@ -76,9 +76,9 @@ public class GuessCoordinateToColor implements CoordinateToColor{
     }
 
     public boolean calculateGreenMappedToZ() {
-        int columnDepth = lutImage.columnDepth();
+        int columnDepth = lutImage.columnDepth;
         int X = (columnDepth - 1) * lutImage.sideSize + 1;
-        int Y = (lutImage.rowDepth() - 1) * lutImage.sideSize + 1;
+        int Y = (lutImage.rowDepth - 1) * lutImage.sideSize + 1;
         int xOnStrongest = lutImage.getPixelByIndex(Y * lutImage.lutWidth + X);
         return greenIsStrongestOnPixel(xOnStrongest);
     }
