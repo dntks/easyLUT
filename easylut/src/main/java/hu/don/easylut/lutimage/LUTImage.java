@@ -2,7 +2,6 @@ package hu.don.easylut.lutimage;
 
 
 import android.graphics.Bitmap;
-import android.graphics.Point;
 
 public class LUTImage {
     private static final int COLOR_DEPTH = 256;
@@ -68,22 +67,13 @@ public class LUTImage {
     }
 
     private int getLutPixelIndex(int pixelColor) {
-        Point point = getPointCoordinateOnLutImage(
-                DistortedColor.getColorOnXCoordinate(this, pixelColor),
-                DistortedColor.getColorOnYCoordinate(this, pixelColor),
-                DistortedColor.getColorOnZCoordinate(this, pixelColor));
-        return point.y * lutWidth + point.x;
-    }
-
-    private Point getPointCoordinateOnLutImage(int colorOnXCoordinate, int colorOnYCoordinate,
-                                               int colorOnZCoordinate) {
+        int colorOnZCoordinate = DistortedColor.getColorOnZCoordinate(this, pixelColor);
         int rowDepth = rowDepth();
         final int z_XDepth = rowDepth == 1 ? colorOnZCoordinate : colorOnZCoordinate % rowDepth;
         final int z_YDepth = rowDepth == 1 ? 0 : colorOnZCoordinate / rowDepth;
-        int lutX = z_XDepth * sideSize + colorOnXCoordinate;
-        int lutY = z_YDepth * sideSize + colorOnYCoordinate;
-        // FIXME this creates a large number of objects on the heap
-        return new Point(lutX, lutY);
+        int lutX = z_XDepth * sideSize + DistortedColor.getColorOnXCoordinate(this, pixelColor);
+        int lutY = z_YDepth * sideSize + DistortedColor.getColorOnYCoordinate(this, pixelColor);
+        return lutY * lutWidth + lutX;
     }
 
 }
