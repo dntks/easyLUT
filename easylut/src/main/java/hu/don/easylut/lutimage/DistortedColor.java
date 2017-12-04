@@ -3,46 +3,47 @@ package hu.don.easylut.lutimage;
 import android.graphics.Color;
 
 public class DistortedColor {
-    private LUTImage lutImage;
-    public final int distortedRed;
-    public final int distortedGreen;
-    public final int distortedBlue;
 
-    public DistortedColor(LUTImage lutImage, int pixelColor) {
-        this.lutImage = lutImage;
-        distortedRed = Color.red(pixelColor) / lutImage.rgbDistortion;
-        distortedGreen = Color.green(pixelColor) / lutImage.rgbDistortion;
-        distortedBlue = Color.blue(pixelColor) / lutImage.rgbDistortion;
-    }
-
-    public int getColorOnXCoordinate() {
+    public static int getColorOnXCoordinate(LUTImage lutImage, int pixelColor) {
         if (lutImage.coordinateToColor.isRedMappedToX()) {
-            return distortedRed;
+            return getRed(lutImage, pixelColor);
         } else if (lutImage.coordinateToColor.isGreenMappedToX()) {
-            return distortedGreen;
+            return getGreen(lutImage, pixelColor);
         } else {
-            return distortedBlue;
+            return getBlue(lutImage, pixelColor);
         }
     }
 
-    public int getColorOnYCoordinate() {
+    public static int getColorOnYCoordinate(LUTImage lutImage, int pixelColor) {
         if (lutImage.coordinateToColor.isRedMappedToY()) {
-            return distortedRed;
+            return getRed(lutImage, pixelColor);
         } else if (lutImage.coordinateToColor.isGreenMappedToY()) {
-            return distortedGreen;
+            return getGreen(lutImage, pixelColor);
         } else {
-            return distortedBlue;
+            return getBlue(lutImage, pixelColor);
         }
     }
 
-    public int getColorOnZCoordinate() {
+    public static int getColorOnZCoordinate(LUTImage lutImage, int pixelColor) {
         if (lutImage.coordinateToColor.isRedMappedToZ()) {
-            return distortedRed;
+            return getRed(lutImage, pixelColor);
         } else if (lutImage.coordinateToColor.isGreenMappedToZ()) {
-            return distortedGreen;
+            return getGreen(lutImage, pixelColor);
         } else {
-            return distortedBlue;
+            return getBlue(lutImage, pixelColor);
         }
+    }
+
+    private static int getBlue(LUTImage lutImage, int pixelColor) {
+        return Color.blue(pixelColor) / lutImage.rgbDistortion;
+    }
+
+    private static int getGreen(LUTImage lutImage, int pixelColor) {
+        return Color.green(pixelColor) / lutImage.rgbDistortion;
+    }
+
+    private static int getRed(LUTImage lutImage, int pixelColor) {
+        return Color.red(pixelColor) / lutImage.rgbDistortion;
     }
 
 }

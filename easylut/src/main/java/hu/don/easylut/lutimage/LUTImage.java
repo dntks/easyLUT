@@ -21,7 +21,8 @@ public class LUTImage {
         this.rgbDistortion = COLOR_DEPTH / sideSize;
     }
 
-    public static LUTImage createLutImage(Bitmap lutBitmap, CoordinateToColor.Type coordinateToColorType) {
+    public static LUTImage createLutImage(Bitmap lutBitmap,
+                                          CoordinateToColor.Type coordinateToColorType) {
         int lutWidth = lutBitmap.getWidth();
         int lutColors[] = new int[lutWidth * lutBitmap.getHeight()];
         lutBitmap.getPixels(lutColors, 0, lutWidth, 0, 0, lutWidth, lutBitmap.getHeight());
@@ -67,13 +68,15 @@ public class LUTImage {
     }
 
     private int getLutPixelIndex(int pixelColor) {
-        // FIXME this creates a large number of objects on the heap
-        DistortedColor distortedColor = new DistortedColor(this, pixelColor);
-        Point point = getPointCoordinateOnLutImage(distortedColor.getColorOnXCoordinate(), distortedColor.getColorOnYCoordinate(), distortedColor.getColorOnZCoordinate());
+        Point point = getPointCoordinateOnLutImage(
+                DistortedColor.getColorOnXCoordinate(this, pixelColor),
+                DistortedColor.getColorOnYCoordinate(this, pixelColor),
+                DistortedColor.getColorOnZCoordinate(this, pixelColor));
         return point.y * lutWidth + point.x;
     }
 
-    private Point getPointCoordinateOnLutImage(int colorOnXCoordinate, int colorOnYCoordinate, int colorOnZCoordinate) {
+    private Point getPointCoordinateOnLutImage(int colorOnXCoordinate, int colorOnYCoordinate,
+                                               int colorOnZCoordinate) {
         int rowDepth = rowDepth();
         final int z_XDepth = rowDepth == 1 ? colorOnZCoordinate : colorOnZCoordinate % rowDepth;
         final int z_YDepth = rowDepth == 1 ? 0 : colorOnZCoordinate / rowDepth;
