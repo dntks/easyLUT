@@ -4,7 +4,11 @@ package hu.don.easylut.lutimage;
 import android.graphics.Bitmap;
 
 public class LUTImage {
+
+    private static final String TAG = LUTImage.class.getSimpleName();
+
     private static final int COLOR_DEPTH = 256;
+
     public final int lutWidth;
     public final int lutHeight;
     public final int sideSize;
