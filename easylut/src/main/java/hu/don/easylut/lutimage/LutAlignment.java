@@ -13,16 +13,12 @@ public interface LutAlignment {
 
         @Override
         public int getX(int rowDepth, int sideSize, int x, int y, int z) {
-            int lutX = (rowDepth == 1 ? z : z % rowDepth) * sideSize + x;
-//            Log.d(TAG, String.format("getX: (%d,%d,%d) @ %d --> %d", x, y, z, sideSize, lutX));
-            return lutX;
+            return (rowDepth == 1 ? z : z % rowDepth) * sideSize + x;
         }
 
         @Override
         public int getY(int rowDepth, int sideSize, int x, int y, int z) {
-            int lutY = (rowDepth == 1 ? 0 : z / rowDepth) * sideSize + y;
-//            Log.d(TAG, String.format("getY: (%d,%d,%d) @ %d --> %d", x, y, z, sideSize, lutY));
-            return lutY;
+            return (rowDepth == 1 ? 0 : z / rowDepth) * sideSize + y;
         }
 
     }
@@ -32,19 +28,15 @@ public interface LutAlignment {
         @Override
         public int getX(int rowDepth, int sideSize, int x, int y, int z) {
             int red = x;
-            int green = Math.max(0, ((y + 1) / rowDepth) - 1) * sideSize;
-            int lutX = red + green;
-//            Log.d(TAG, String.format("getX: (%d,%d,%d) @ %d --> %d", x, y, z, sideSize, lutX));
-            return lutX;
+            int green = y % rowDepth * sideSize;
+            return red + green;
         }
 
         @Override
         public int getY(int rowDepth, int sideSize, int x, int y, int z) {
-            int green = y % rowDepth;
+            int green = y / rowDepth;
             int blue = z * rowDepth;
-            int lutY = green + blue;
-//            Log.d(TAG, String.format("getY: (%d,%d,%d) @ %d --> %d", x, y, z, sideSize, lutY));
-            return lutY;
+            return green + blue;
         }
 
     }

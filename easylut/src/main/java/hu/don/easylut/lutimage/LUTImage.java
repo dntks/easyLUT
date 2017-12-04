@@ -72,7 +72,6 @@ public class LUTImage {
         int red = ((lutColors[lutIndex] >> 16) & 0xff);
         int green = ((lutColors[lutIndex] >> 8) & 0xff);
         int blue = ((lutColors[lutIndex]) & 0xff);
-//        Log.d(TAG, String.format("getPixelByIndex: %d: %d,%d,%d", lutIndex, red, green, blue));
         return 0xff000000 | (red << 16) | (green << 8) | blue;
     }
 
@@ -82,9 +81,7 @@ public class LUTImage {
         int z = DistortedColor.getColorOnZCoordinate(this, pixelColor);
         int lutX = lutAlignment.getX(rowDepth, sideSize, x, y, z);
         int lutY = lutAlignment.getY(rowDepth, sideSize, x, y, z);
-        int index = lutY * lutWidth + lutX;
-//        Log.d(TAG, String.format("getLutPixelIndex: z=%d --> %d,%d --> %d", z, lutX, lutY, index));
-        return index;
+        return lutY * lutWidth + lutX;
     }
 
     @Override
