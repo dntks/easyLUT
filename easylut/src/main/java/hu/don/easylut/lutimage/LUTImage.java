@@ -82,6 +82,7 @@ public class LUTImage {
         final int z_YDepth = rowDepth == 1 ? 0 : colorOnZCoordinate / rowDepth;
         int lutX = z_XDepth * sideSize + colorOnXCoordinate;
         int lutY = z_YDepth * sideSize + colorOnYCoordinate;
+        // FIXME this creates a large number of objects on the heap
         return new Point(lutX, lutY);
     }
 
