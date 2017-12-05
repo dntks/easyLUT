@@ -209,7 +209,11 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
                 ivImage.setImageBitmap(filterBitmap);
                 setBusy(false, true);
                 onFilterClicked(lastFilterSelection);
-                Log.d(TAG, String.format("loaded bitmap in %.2fms", (System.nanoTime() - start) / 1e6f));
+                if (filterBitmap == null) {
+                    Log.d(TAG, String.format("loading bitmap failed in %.2fms", (System.nanoTime() - start) / 1e6f));
+                } else {
+                    Log.d(TAG, String.format("loaded %dx%d bitmap in %.2fms", filterBitmap.getWidth(), filterBitmap.getHeight(), (System.nanoTime() - start) / 1e6f));
+                }
             }
         }.execute(bitmap);
     }
@@ -241,7 +245,11 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
             protected void onPostExecute(Bitmap bitmap) {
                 ivImage.setImageBitmap(bitmap);
                 setBusy(false, false);
-                Log.d(TAG, String.format("processed bitmap in %.2fms", (System.nanoTime() - start) / 1e6f));
+                if (bitmap == null) {
+                    Log.d(TAG, String.format("processing bitmap failed in %.2fms", (System.nanoTime() - start) / 1e6f));
+                } else {
+                    Log.d(TAG, String.format("processed %dx%d bitmap in %.2fms", bitmap.getWidth(), bitmap.getHeight(), (System.nanoTime() - start) / 1e6f));
+                }
             }
         }.execute();
     }
