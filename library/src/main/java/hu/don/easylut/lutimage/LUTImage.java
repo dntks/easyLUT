@@ -2,7 +2,6 @@ package hu.don.easylut.lutimage;
 
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 public class LUTImage {
 
@@ -33,7 +32,6 @@ public class LUTImage {
         this.rgbDistortion = COLOR_DEPTH / sideSize;
         coordinateToColor = coordinateToColorType.getCoordinateToColor(this);
         lutAlignment = lutAlignmentMode.getLutAlignment();
-        Log.d(TAG, "LUTImage: " + toString());
     }
 
     public static LUTImage createLutImage(Bitmap lutBitmap,
