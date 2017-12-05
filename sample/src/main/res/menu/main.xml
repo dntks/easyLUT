@@ -6,4 +6,9 @@
         android:checkable="true"
         android:title="Show identity colors"/>
 
+    <item
+        android:id="@+id/action_full_res"
+        android:checkable="true"
+        android:title="Process full resolution"/>
+
 </menu>

@@ -38,7 +38,9 @@
             android:shadowRadius="4"
             android:textColor="#fff"
             android:textSize="14sp"
-            tools:text="Sample"/>
+            android:visibility="gone"
+            tools:text="Sample"
+            tools:visibility="visible"/>
 
         <ProgressBar
             android:id="@+id/pb_busy"
