@@ -2,7 +2,7 @@ package hu.don.easylut.easylutproject;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
         ivImage.post(new Runnable() {
             @Override
             public void run() {
-                setImage(R.drawable.rgb);
+                setImage(R.drawable.landscape);
             }
         });
 
@@ -125,30 +125,63 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
         return super.onOptionsItemSelected(item);
     }
 
-    private void setImage(@DrawableRes int resource) {
-        ivImage.setImageResource(resource);
-        originalBitmap = ((BitmapDrawable) ivImage.getDrawable()).getBitmap();
-        if (RESIZE_BITMAP) {
-            int measuredHeight = ivImage.getMeasuredHeight();
-            int measuredWidth = ivImage.getMeasuredWidth();
-            if (measuredWidth != 0 && measuredHeight != 0 && (originalBitmap.getHeight() >= measuredHeight || originalBitmap.getWidth() >= measuredWidth)) {
-                float originalRatio = (float) originalBitmap.getWidth() / (float) originalBitmap.getHeight();
-                float measuredRatio = (float) measuredWidth / (float) measuredHeight;
-                if (originalRatio > measuredRatio) {
-                    measuredWidth = (int) (measuredHeight * originalRatio);
-                } else {
-                    measuredHeight = (int) (measuredWidth / originalRatio);
-                }
-                DisplayMetrics metrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                originalBitmap = Bitmap.createScaledBitmap(originalBitmap, measuredWidth, measuredHeight, true);
-            }
-        }
-        onFilterClicked(lastFilterSelection);
-    }
-
     private void addFilter(String name, Filter filter) {
         effectItems.add(new FilterSelection(name.toUpperCase(Locale.ENGLISH), filter));
+    }
+
+    private void setBusy(boolean busy, boolean removeImage) {
+        if (busy) {
+            pbBusy.animate().alpha(1f).start();
+            pbBusy.setVisibility(View.VISIBLE);
+            ivImage.animate().alpha(removeImage ? 0f : 0.5f).start();
+        } else {
+            ivImage.animate().alpha(1f).start();
+            pbBusy.animate().alpha(0f).start();
+        }
+    }
+
+    private void setImage(@DrawableRes final int resource) {
+        new AsyncTask<Void, Void, Bitmap>() {
+
+            long start;
+
+            @Override
+            protected void onPreExecute() {
+                setBusy(true, true);
+                start = System.nanoTime();
+            }
+
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resource);
+                if (bitmap != null && RESIZE_BITMAP) {
+                    int measuredHeight = ivImage.getMeasuredHeight();
+                    int measuredWidth = ivImage.getMeasuredWidth();
+                    if (measuredWidth != 0 && measuredHeight != 0 && (bitmap.getHeight() >= measuredHeight || bitmap.getWidth() >= measuredWidth)) {
+                        float originalRatio = (float) bitmap.getWidth() / (float) bitmap.getHeight();
+                        float measuredRatio = (float) measuredWidth / (float) measuredHeight;
+                        if (originalRatio > measuredRatio) {
+                            measuredWidth = (int) (measuredHeight * originalRatio);
+                        } else {
+                            measuredHeight = (int) (measuredWidth / originalRatio);
+                        }
+                        DisplayMetrics metrics = new DisplayMetrics();
+                        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, measuredWidth, measuredHeight, true);
+                    }
+                }
+                return bitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                originalBitmap = bitmap;
+                ivImage.setImageBitmap(bitmap);
+                setBusy(false, true);
+                onFilterClicked(lastFilterSelection);
+                Log.d(TAG, String.format("loaded bitmap in %.2fms", (System.nanoTime() - start) / 1e6f));
+            }
+        }.execute();
     }
 
     @Override
@@ -161,9 +194,7 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
 
             @Override
             protected void onPreExecute() {
-                pbBusy.animate().alpha(1f).start();
-                pbBusy.setVisibility(View.VISIBLE);
-                ivImage.animate().alpha(0.5f).start();
+                setBusy(true, false);
                 start = System.nanoTime();
             }
 
@@ -175,8 +206,7 @@ public class MainActivity extends AppCompatActivity implements FilterAdapter.OnF
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 ivImage.setImageBitmap(bitmap);
-                ivImage.animate().alpha(1f).start();
-                pbBusy.animate().alpha(0f).start();
+                setBusy(false, false);
                 Log.d(TAG, String.format("processed bitmap in %.2fms", (System.nanoTime() - start) / 1e6f));
             }
         }.execute();
