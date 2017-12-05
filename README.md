@@ -1,10 +1,10 @@
-With easyLUT you can apply several type of LUT filters to your Bitmaps and ImageViews easily.
+With easyLUT you can apply several types of color look-up table (CLUT) transformations to your Bitmaps and ImageViews easily.
 
 EasyLUT is available on jCenter:
 
 `compile 'hu.don.easylut:easylut:0.4'`
 
- In the https://github.com/dntks/easyLUT/tree/master/app you can check an example usage of the library.
+This project includes a sample of the library in the `sample` module. The library itself is located in `library`.
 
 Example usage with LUT resouce id:
 
@@ -27,16 +27,29 @@ When calling with bitmap, the LUTFilter object will have a reference to the bitm
 
 Compatibility with file access usage of LUT bitmap is planned. Any other suggestions are welcome.
 
+# Supported image types
+
 Compatibility tested for the following LUT image types:
- *  64x64x64 LUT - 2D image is 512*512 - usual RGB dimensions: Red on X axis, Green on Y axis, Blue on Z axis.
 
- ![lut64](https://raw.githubusercontent.com/dntks/easyLUT/master/app/src/main/res/drawable-nodpi/anotherlut.png)
- *  16x16x16 inverted LUT - 2D image is 64*64 - inverted RGB dimensions: Blue on X axis, Red on Y axis, Green on Z axis.
+## Square 64x64x64 LUT
+ ![Square 64x64x64 LUT](app/src/main/res/drawable-nodpi/identity_square_8.png?raw=true)
+ - 2D image is 512×512
+ - Conventional RGB dimensions: red on X-axis, green on Y-axis, blue on Z-axis
 
- ![inverted 16x16x16 LUT](https://github.com/dntks/easyLUT/blob/master/app/src/main/res/drawable-nodpi/lut2.png?raw=true)
- *  16x16x16 LUT - 2D image is 256*16 - usual RGB dimensions: Red on X axis, Green on Y axis, Blue on Z axis.
+## Hald 64x64x64 LUT
+ ![Hald 64x64x64 LUT](app/src/main/res/drawable-nodpi/identity_hald_8.png?raw=true)
+ - 2D image is 512×512
 
- ![One lined 16x16x16 LUT](https://github.com/dntks/easyLUT/blob/master/app/src/main/res/drawable-nodpi/pnglut_small_1.png?raw=true)
+## One-lined LUTs
+ ![One-lined 16x16x16 LUT](app/src/main/res/drawable-nodpi/pnglut_small_1.png?raw=true)
+- One-line LUT
+
+## Alternative RGB dimensions
+ ![altermative 16x16x16 LUT](app/src/main/res/drawable-nodpi/filter_square_4_brg.png?raw=true)
+ - Inverted RGB dimensions: blue on X-axis, red on Y-axis, green on Z-axis
+
+![alternative 64x64x64 wide LUT](app/src/main/res/drawable-nodpi/filter_wide_8_bgr?raw=true)
+- Inverted RGB dimensions: blue on X-axis, green on Y-axis, red on Z-axis
 
  The RGB dimensions are now guessed by the library, assuming normal color schemes:
  Checking the RGB values in LUT cube's 3 parts on the XYZ axes farthest parts.
