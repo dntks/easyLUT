@@ -41,14 +41,14 @@ Compatibility tested for the following LUT image types:
  - 2D image is 512×512
 
 ## One-lined LUTs
- ![One-lined 16x16x16 LUT](sample/src/main/res/drawable-nodpi/pnglut_small_1.png?raw=true)
+ ![One-lined 16x16x16 LUT](sample/src/main/res/drawable-nodpi/filter_wide_4_00.png?raw=true)
 - One-line LUT
 
 ## Alternative RGB dimensions
  ![altermative 16x16x16 LUT](sample/src/main/res/drawable-nodpi/filter_square_4_brg.png?raw=true)
  - Inverted RGB dimensions: blue on X-axis, red on Y-axis, green on Z-axis
 
-![alternative 64x64x64 wide LUT](sample/src/main/res/drawable-nodpi/filter_wide_8_bgr?raw=true)
+![alternative 64x64x64 wide LUT](sample/src/main/res/drawable-nodpi/filter_wide_8_bgr.png?raw=true)
 - Inverted RGB dimensions: blue on X-axis, green on Y-axis, red on Z-axis
 
  The RGB dimensions are now guessed by the library, assuming normal color schemes:
