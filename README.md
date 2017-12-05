@@ -1,3 +1,5 @@
+<img src="screenshot.png" width="200" title="Screenshot" />
+
 With easyLUT you can apply several types of color look-up table (CLUT) transformations to your Bitmaps and ImageViews easily.
 
 # Dependency
@@ -46,23 +48,32 @@ Full usage:
 Compatibility tested for the following LUT image types:
 
 ## Square 64x64x64 LUT
- ![Square 64x64x64 LUT](sample/src/main/res/drawable-nodpi/identity_square_8.png?raw=true)
- - 2D image is 512×512
+
+<img src="sample/src/main/res/drawable-nodpi/identity_square_8.png?raw=true" width="100" title="Square 64x64x64 LUT" />
+
+- 2D image is 512×512
  - Conventional RGB dimensions: red on X-axis, green on Y-axis, blue on Z-axis
 
 ## Hald 64x64x64 LUT
- ![Hald 64x64x64 LUT](sample/src/main/res/drawable-nodpi/identity_hald_8.png?raw=true)
+
+<img src="sample/src/main/res/drawable-nodpi/identity_hald_8.png?raw=true" width="100" title="Hald 64x64x64 LUT" />
+
  - 2D image is 512×512
 
 ## One-lined LUTs
- ![One-lined 16x16x16 LUT](sample/src/main/res/drawable-nodpi/filter_wide_4_00.png?raw=true)
-- One-line LUT
+
+<img src="sample/src/main/res/drawable-nodpi/filter_wide_4_00.png?raw=true" width="200" title="One-line 16x16x16 LUT" />
+
+- One-line LUT, where Z-axis continues horizontally instead of wrapping to form a square
 
 ## Alternative RGB dimensions
- ![altermative 16x16x16 LUT](sample/src/main/res/drawable-nodpi/filter_square_4_brg.png?raw=true)
+
+<img src="sample/src/main/res/drawable-nodpi/filter_square_4_brg.png?raw=true" width="100" title="Altermative 16x16x16 LUT" />
+
  - Inverted RGB dimensions: blue on X-axis, red on Y-axis, green on Z-axis
 
-![alternative 64x64x64 wide LUT](sample/src/main/res/drawable-nodpi/filter_wide_8_bgr.png?raw=true)
+<img src="sample/src/main/res/drawable-nodpi/filter_wide_8_bgr.png?raw=true" width="300" title="Alternative 64x64x64 wide LUT" />
+
 - Inverted RGB dimensions: blue on X-axis, green on Y-axis, red on Z-axis
 
 ## Other variants
