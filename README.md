@@ -1,8 +1,12 @@
 With easyLUT you can apply several types of color look-up table (CLUT) transformations to your Bitmaps and ImageViews easily.
 
+# Dependency
+
 EasyLUT is available on jCenter:
 
 `compile 'hu.don.easylut:easylut:0.4'`
+
+# Usage
 
 This project includes a sample of the library in the `sample` module. The library itself is located in `library`.
 
@@ -25,7 +29,17 @@ When calling with resources it won't load the bitmap into memory until using the
 
 When calling with bitmap, the LUTFilter object will have a reference to the bitmap object, but it won't load the bitmap every time you use it.
 
-Compatibility with file access usage of LUT bitmap is planned. Any other suggestions are welcome.
+It's highly recommended to explicity specify the color axes using `withColorAxes()` to unexpected results. CLUTs are typically `CoordinateToColor.Type.RGB_TO_XYZ`.
+
+Full usage:
+
+    EasyLUT.fromResourceId()
+           .withResources(resources)
+           .withLutBitmapId(R.drawable.filter_lut_01)
+           .withColorAxes(CoordinateToColor.Type.RGB_TO_XYZ)           //default is GUESS_AXES
+           .withStrategy(BitmapStrategy.Type.APPLY_ON_ORIGINAL_BITMAP) //default is CREATING_NEW_BITMAP
+           .withAlignmentMode(LutAlignment.Mode.HALD)                  //default is SQUARE
+           .createFilter();
 
 # Supported image types
 
@@ -51,19 +65,8 @@ Compatibility tested for the following LUT image types:
 ![alternative 64x64x64 wide LUT](sample/src/main/res/drawable-nodpi/filter_wide_8_bgr.png?raw=true)
 - Inverted RGB dimensions: blue on X-axis, green on Y-axis, red on Z-axis
 
- The RGB dimensions are now guessed by the library, assuming normal color schemes:
- Checking the RGB values in LUT cube's 3 parts on the XYZ axes farthest parts.
+## Other variants
 
- If you come across any other LUT types which is not handled well by the library please create a ticket.
+The RGB dimensions are now guessed by the library, assuming that the RGB dimensions correspond with the LUT cube's XYZ axes such that the maximum value exists in the farthest coordinate.
 
-For inverted color schemes, for example when you want red pixel to become blueish ones, I'll update the library with configurable axis scheme.
-
-Full usage:
-
-    EasyLUT.fromResourceId()
-           .withResources(resources)
-           .withLutBitmapId(R.drawable.filter_lut_01)
-           .withColorAxes(CoordinateToColor.Type.RGB_TO_XYZ)           //default is GUESS_AXES
-           .withStrategy(BitmapStrategy.Type.APPLY_ON_ORIGINAL_BITMAP) //default is CREATING_NEW_BITMAP
-           .withAlignmentMode(LutAlignment.Mode.HALD)                  //default is SQUARE
-           .createFilter();
+If you come across any other LUT types which is not handled well by the library please create a ticket.
