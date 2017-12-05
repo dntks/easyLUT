@@ -25,6 +25,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:27.0.2'
-    compile project(":easylut")
+    compile project(":library")
     testCompile 'junit:junit:4.12'
 }

@@ -1,7 +1,5 @@
 .gradle/
 .idea/
-app/app.iml
+*.iml
 build/
-easyLUT.iml
-easylut/easylut.iml
 local.properties
