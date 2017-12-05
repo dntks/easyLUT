@@ -32,23 +32,23 @@ Compatibility with file access usage of LUT bitmap is planned. Any other suggest
 Compatibility tested for the following LUT image types:
 
 ## Square 64x64x64 LUT
- ![Square 64x64x64 LUT](app/src/main/res/drawable-nodpi/identity_square_8.png?raw=true)
+ ![Square 64x64x64 LUT](sample/src/main/res/drawable-nodpi/identity_square_8.png?raw=true)
  - 2D image is 512×512
  - Conventional RGB dimensions: red on X-axis, green on Y-axis, blue on Z-axis
 
 ## Hald 64x64x64 LUT
- ![Hald 64x64x64 LUT](app/src/main/res/drawable-nodpi/identity_hald_8.png?raw=true)
+ ![Hald 64x64x64 LUT](sample/src/main/res/drawable-nodpi/identity_hald_8.png?raw=true)
  - 2D image is 512×512
 
 ## One-lined LUTs
- ![One-lined 16x16x16 LUT](app/src/main/res/drawable-nodpi/pnglut_small_1.png?raw=true)
+ ![One-lined 16x16x16 LUT](sample/src/main/res/drawable-nodpi/pnglut_small_1.png?raw=true)
 - One-line LUT
 
 ## Alternative RGB dimensions
- ![altermative 16x16x16 LUT](app/src/main/res/drawable-nodpi/filter_square_4_brg.png?raw=true)
+ ![altermative 16x16x16 LUT](sample/src/main/res/drawable-nodpi/filter_square_4_brg.png?raw=true)
  - Inverted RGB dimensions: blue on X-axis, red on Y-axis, green on Z-axis
 
-![alternative 64x64x64 wide LUT](app/src/main/res/drawable-nodpi/filter_wide_8_bgr?raw=true)
+![alternative 64x64x64 wide LUT](sample/src/main/res/drawable-nodpi/filter_wide_8_bgr?raw=true)
 - Inverted RGB dimensions: blue on X-axis, green on Y-axis, red on Z-axis
 
  The RGB dimensions are now guessed by the library, assuming normal color schemes:
@@ -63,6 +63,7 @@ Full usage:
     EasyLUT.fromResourceId()
            .withResources(resources)
            .withLutBitmapId(R.drawable.filter_lut_01)
-           .withColorAxes(CoordinateToColor.Type.RGB_TO_XYZ)          //default is GUESS_AXES
-           .withStrategy(BitmapStrategy.Type.APPLY_ON_ORIGINAL_BITMAP)//default is CREATING_NEW_BITMAP
+           .withColorAxes(CoordinateToColor.Type.RGB_TO_XYZ)           //default is GUESS_AXES
+           .withStrategy(BitmapStrategy.Type.APPLY_ON_ORIGINAL_BITMAP) //default is CREATING_NEW_BITMAP
+           .withAlignmentMode(LutAlignment.Mode.HALD)                  //default is SQUARE
            .createFilter();
