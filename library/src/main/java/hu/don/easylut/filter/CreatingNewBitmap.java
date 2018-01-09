@@ -1,6 +1,5 @@
 package hu.don.easylut.filter;
 
-
 import android.graphics.Bitmap;
 
 import hu.don.easylut.lutimage.LUTImage;

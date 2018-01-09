@@ -1,6 +1,5 @@
 package hu.don.easylut.lutimage;
 
-
 import android.graphics.Bitmap;
 
 public class LUTImage {
@@ -17,8 +16,8 @@ public class LUTImage {
     protected final int rowDepth;
     protected final int columnDepth;
     protected final int rgbDistortion;
-    protected CoordinateToColor coordinateToColor;
-    protected LutAlignment lutAlignment;
+    protected final CoordinateToColor coordinateToColor;
+    protected final LutAlignment lutAlignment;
 
     private LUTImage(int lutWidth, int lutHeight, int[] lutColors,
                      CoordinateToColor.Type coordinateToColorType,
@@ -37,11 +36,10 @@ public class LUTImage {
     public static LUTImage createLutImage(Bitmap lutBitmap,
                                           CoordinateToColor.Type coordinateToColorType,
                                           LutAlignment.Mode lutAlignmentMode) {
-        int lutWidth = lutBitmap.getWidth();
+        final int lutWidth = lutBitmap.getWidth();
         int lutColors[] = new int[lutWidth * lutBitmap.getHeight()];
         lutBitmap.getPixels(lutColors, 0, lutWidth, 0, 0, lutWidth, lutBitmap.getHeight());
-        LUTImage lutImage;
-        lutImage = new LUTImage(lutWidth, lutBitmap.getHeight(), lutColors,
+        LUTImage lutImage = new LUTImage(lutWidth, lutBitmap.getHeight(), lutColors,
                 coordinateToColorType, lutAlignmentMode);
 
         lutBitmap.recycle();
