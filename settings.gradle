@@ -1,1 +1,1 @@
-include ':app', ':easylut'
+include ':sample', ':library'
