@@ -31,7 +31,7 @@ When calling with resources it won't load the bitmap into memory until using the
 
 When calling with bitmap, the LUTFilter object will have a reference to the bitmap object, but it won't load the bitmap every time you use it.
 
-It's highly recommended to explicity specify the color axes using `withColorAxes()` to unexpected results. CLUTs are typically `CoordinateToColor.Type.RGB_TO_XYZ`.
+It's highly recommended to explicitly specify the color axes using `withColorAxes()` to avoid unexpected results. CLUTs are typically `CoordinateToColor.Type.RGB_TO_XYZ`.
 
 Full usage:
 
