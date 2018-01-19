@@ -31,6 +31,8 @@ When calling with resources it won't load the bitmap into memory until using the
 
 When calling with bitmap, the LUTFilter object will have a reference to the bitmap object, but it won't load the bitmap every time you use it.
 
+**Important**: Put your LUT images into the drawable-nodpi folder, so the won't get resized by the system.
+
 It's highly recommended to explicitly specify the color axes using `withColorAxes()` to avoid unexpected results. CLUTs are typically `CoordinateToColor.Type.RGB_TO_XYZ`.
 
 Full usage:
