@@ -87,5 +87,5 @@ If you come across any other LUT types which is not handled well by the library 
 ## Future improvement possibilities
 
  - Direct usage with ImageView. Problem can be that the original bitmap will be lost after applying filter.
- - Enable a from file and to file option. 
+ - Enable a load from file and save to file option. 
  - Processing large images without having OutOfMemoryError.
