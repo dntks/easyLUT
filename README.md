@@ -6,7 +6,7 @@ With easyLUT you can apply several types of color look-up table (CLUT) transform
 
 EasyLUT is available on jCenter:
 
-`compile 'hu.don.easylut:easylut:0.4'`
+`compile 'hu.don.easylut:easylut:0.5'`
 
 # Usage
 
